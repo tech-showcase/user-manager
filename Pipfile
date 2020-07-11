@@ -1,0 +1,12 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[requires]
+python_version = "3.7"
+
+[packages]
+Django = {version="3.0.7"}
+environ = {version="1.0"}
+django_environ = {version="0.4.5"}
