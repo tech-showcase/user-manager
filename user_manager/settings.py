@@ -83,6 +83,14 @@ WSGI_APPLICATION = 'user_manager.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env.str('POSTGRESQL_DB'),
+        'USER': env.str('POSTGRESQL_USER'),
+        'PASSWORD': env.str('POSTGRESQL_PASSWORD'),
+        'HOST': env.str('POSTGRESQL_HOST'),
+        'PORT': env.str('POSTGRESQL_PORT'),
+    },
+    'options': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': env.str('SQLITE_PATH', default=os.path.join(BASE_DIR, 'db.sqlite3')),
     }
