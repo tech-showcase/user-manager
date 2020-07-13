@@ -80,6 +80,7 @@ class User(models.Model):
     password = PasswordField(max_length=50)
     email = models.EmailField(max_length=75, unique=True)
     phone = models.CharField(validators=[phone_regex_validator], max_length=15, unique=True)
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     role = models.ForeignKey(
