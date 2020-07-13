@@ -14,6 +14,7 @@ class UserModelForm(forms.ModelForm):
 
 
 class UserModelAdmin(admin.ModelAdmin):
+    list_filter = ('is_active', 'role')
     form = UserModelForm
 
 
