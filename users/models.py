@@ -77,7 +77,7 @@ class User(models.Model):
                                                    "Up to 15 digits allowed.")
 
     username = models.CharField(validators=[alphanumeric_regex_validator], max_length=50, unique=True)
-    password = PasswordField(max_length=50)
+    password = PasswordField(max_length=100)
     email = models.EmailField(max_length=75, unique=True)
     phone = models.CharField(validators=[phone_regex_validator], max_length=15, unique=True)
     is_active = models.BooleanField(default=True)
