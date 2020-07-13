@@ -1,0 +1,54 @@
+version: '3.1'
+
+services:
+  postgresql:
+    image: postgres
+    restart: always
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
+    networks:
+      - user-manager
+    environment:
+      POSTGRES_DB: ${POSTGRESQL_DB}
+      POSTGRES_USER: ${POSTGRESQL_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    env_file:
+      - .env
+
+  postgrest:
+    image: postgrest/postgrest
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - user-manager
+    environment:
+      PGRST_DB_URI: postgres://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@postgresql:${POSTGRESQL_PORT}/${POSTGRESQL_DB}
+      PGRST_DB_SCHEMA: public
+      PGRST_DB_ANON_ROLE: tscadmin
+      PGRST_JWT_SECRET: ${POSTGREST_PASSWORD}
+    env_file:
+      - .env
+    depends_on:
+      - postgresql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - user-manager
+    depends_on:
+      - postgresql
+
+volumes:
+  postgresql-data:
+    driver: local
+
+networks:
+  user-manager:
+    driver: bridge
