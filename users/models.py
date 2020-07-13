@@ -3,15 +3,58 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import make_password
 
 
+class Service(models.Model):
+    alphanumeric_regex_validator = RegexValidator(regex=r'^[a-zA-Z0-9_]*$',
+                                                  message="Field's value must be alphanumeric and underscore only.")
+
+    code = models.CharField(validators=[alphanumeric_regex_validator], max_length=50, unique=True)
+    name = models.CharField(max_length=75)
+    description = models.CharField(max_length=200, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['code']
+
+    def __str__(self):
+        return self.code
+
+
+class AccessRight(models.Model):
+    alphanumeric_regex_validator = RegexValidator(regex=r'^[a-zA-Z0-9_]*$',
+                                                  message="Field's value must be alphanumeric and underscore only.")
+
+    code = models.CharField(validators=[alphanumeric_regex_validator], max_length=50, unique=True)
+    name = models.CharField(max_length=75)
+    description = models.CharField(max_length=200, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    service = models.ForeignKey(
+        Service,
+        on_delete=models.CASCADE
+    )
+
+    class Meta:
+        ordering = ['code']
+
+    def __str__(self):
+        return self.code
+
+
 class Role(models.Model):
     alphanumeric_regex_validator = RegexValidator(regex=r'^[a-zA-Z0-9_]*$',
                                                   message="Field's value must be alphanumeric and underscore only.")
 
     code = models.CharField(validators=[alphanumeric_regex_validator], max_length=50, unique=True)
     name = models.CharField(max_length=75)
-    description = models.CharField(max_length=200)
+    description = models.CharField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    access_rights = models.ManyToManyField(AccessRight,
+                                           blank=True)
+
+    class Meta:
+        ordering = ['code']
 
     def __str__(self):
         return self.code
@@ -39,12 +82,17 @@ class User(models.Model):
     phone = models.CharField(validators=[phone_regex_validator], max_length=15, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    roles = models.ForeignKey(
+    role = models.ForeignKey(
         Role,
         on_delete=models.SET_NULL,
         null=True,
         blank=True
     )
+    access_right = models.ManyToManyField(AccessRight,
+                                          blank=True)
+
+    class Meta:
+        ordering = ['username']
 
     def __str__(self):
         return self.username
@@ -61,6 +109,9 @@ class Info(models.Model):
     address = models.CharField(max_length=150)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['user']
 
     def __str__(self):
         return self.user.username
