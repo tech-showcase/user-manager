@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 
-from .models import User, Role, Info
+from .models import User, Role, Info, AccessRight, Service
 
 
 class UserModelForm(forms.ModelForm):
@@ -20,3 +20,5 @@ class UserModelAdmin(admin.ModelAdmin):
 admin.site.register(User, UserModelAdmin)
 admin.site.register(Info)
 admin.site.register(Role)
+admin.site.register(AccessRight)
+admin.site.register(Service)
