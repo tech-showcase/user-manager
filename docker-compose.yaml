@@ -1,6 +1,21 @@
 version: '3.1'
 
 services:
+  user-manager:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: user-manager
+    command: runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000
+    networks:
+      - user-manager
+    depends_on:
+      - postgresql
+    env_file:
+      - .env
+
   postgresql:
     image: postgres
     restart: always
