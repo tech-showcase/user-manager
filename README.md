@@ -10,6 +10,7 @@ This service can be used by another service to provide user management-related f
 
 ## How to run
 ### Docker
+You can run user manager itselfs by:
 - Install docker
 - Build and run docker image as below
 ```shell script
@@ -18,6 +19,11 @@ $ docker run \
       -p 8000:8000 \
       -e ENV_PATH=/.env \
       -v $PWD/.env:/.env \
-      -v $PWD/db.sqlite3:/db.sqlite3 \
       user-manager runserver 0.0.0.0:8000
+```
+or you can run user-manager with all needed stack by:
+- Install docker
+- Run user-manager, PostgreSQL, PostgREST and adminer
+```shell script
+$ docker-compose up
 ```
