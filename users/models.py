@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import make_password
+from datetime import datetime
 
 
 class Service(models.Model):
@@ -29,10 +30,7 @@ class AccessRight(models.Model):
     description = models.CharField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    service = models.ForeignKey(
-        Service,
-        on_delete=models.CASCADE
-    )
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['code']
@@ -50,8 +48,7 @@ class Role(models.Model):
     description = models.CharField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    access_rights = models.ManyToManyField(AccessRight,
-                                           blank=True)
+    access_rights = models.ManyToManyField(AccessRight, blank=True)
 
     class Meta:
         ordering = ['code']
@@ -83,14 +80,8 @@ class User(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    role = models.ForeignKey(
-        Role,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
-    )
-    access_right = models.ManyToManyField(AccessRight,
-                                          blank=True)
+    role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True, blank=True)
+    access_right = models.ManyToManyField(AccessRight, blank=True)
 
     class Meta:
         ordering = ['username']
