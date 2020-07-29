@@ -10,7 +10,7 @@ class Service(models.Model):
 
     code = models.CharField(validators=[alphanumeric_regex_validator], max_length=50, unique=True)
     name = models.CharField(max_length=75)
-    description = models.CharField(max_length=200, blank=True)
+    description = models.CharField(max_length=200, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -27,7 +27,7 @@ class AccessRight(models.Model):
 
     code = models.CharField(validators=[alphanumeric_regex_validator], max_length=50, unique=True)
     name = models.CharField(max_length=75)
-    description = models.CharField(max_length=200, blank=True)
+    description = models.CharField(max_length=200, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
@@ -45,7 +45,7 @@ class Role(models.Model):
 
     code = models.CharField(validators=[alphanumeric_regex_validator], max_length=50, unique=True)
     name = models.CharField(max_length=75)
-    description = models.CharField(max_length=200, blank=True)
+    description = models.CharField(max_length=200, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     access_rights = models.ManyToManyField(AccessRight, blank=True)
