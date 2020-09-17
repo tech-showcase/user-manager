@@ -1,3 +1,4 @@
 from django.contrib import admin
+from .models import APIAccess
 
-# Register your models here.
+admin.site.register(APIAccess)
