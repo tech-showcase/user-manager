@@ -60,9 +60,10 @@ class PasswordField(models.CharField):
     description = "A field for inputting password securely."
 
     def pre_save(self, instance, add):
-        val = make_password(instance)
-        setattr(instance, self.attname, val)
-        return val
+        raw_password = getattr(instance, self.attname)
+        password = make_password(raw_password)
+        setattr(instance, self.attname, password)
+        return password
 
 
 class User(models.Model):
