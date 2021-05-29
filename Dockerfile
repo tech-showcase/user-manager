@@ -1,11 +1,18 @@
-FROM python:3.8.2-alpine3.11
+FROM python:3.8-alpine3.11
 
 ENV PYTHONUNBUFFERED 1
 
-COPY requirements.txt /
-RUN pip install -r /requirements.txt
+RUN apk update && \
+    apk add --no-cache postgresql-libs && \
+    apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev
 
-COPY . /app/
+RUN pip install pipenv
+
 WORKDIR /app
 
-ENTRYPOINT ["python", "manage.py"]
+COPY Pipfile Pipfile.lock /app/
+RUN pipenv install
+
+COPY . /app/
+
+ENTRYPOINT ["pipenv", "run", "python", "manage.py"]
