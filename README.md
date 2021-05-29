@@ -17,8 +17,7 @@ You can run user manager itselfs by:
 $ docker build -t user-manager .
 $ docker run \
       -p 8000:8000 \
-      -e ENV_PATH=/.env \
-      -v $PWD/.env:/.env \
+      --env-file .env \
       user-manager runserver 0.0.0.0:8000
 ```
 or you can run user-manager with all needed stack by:
